@@ -1,0 +1,30 @@
+name: TotalAdmin
+version: '${project.version}'
+main: dev.feliperf.plugins.TotalAdmin
+api-version: '1.20'
+load: STARTUP
+authors: [Felipe Ribeiro]
+dependencies:
+  - org.jetbrains.kotlin:kotlin-stdlib:1.6.10
+commands:
+  admin:
+    description: Activates ADMIN mode for those who have permission to be
+    usage: /admin
+  noadmin:
+    description: Disables ADMIN mode
+    usage: /noadmin
+  gamemode:
+    description: Switch from Gamemode
+    usage: /gamemode
+  spawn:
+    description: Set server spawn
+    usage: /spawn
+  fly:
+    description: Allows player fly
+    usage: /fly
+  timeset:
+    description: Changes current user world TimeSet
+    usage: /timeset
+  kill:
+    description: Kills itself or a target Player
+    usage: /kill
