@@ -1,8 +1,11 @@
 package dev.feliperf.plugins.Commands
+import dev.feliperf.plugins.Contants.Admin.AdminString
 import dev.feliperf.plugins.Contants.SpecificPermissions
+import dev.feliperf.plugins.Functions.AdminFunctions
 import dev.feliperf.plugins.TotalAdmin
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -12,58 +15,27 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.ItemStack
 
 class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
 
-    private val flyFeather = ItemStack(Material.FEATHER)
-    private val invisibleGlowDust = ItemStack(Material.GLOWSTONE_DUST)
 
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>,): Boolean {
         if (SpecificPermissions.canBeAdmin(sender.name)) {
             val admName = sender.name
             sender.sendMessage("${ChatColor.LIGHT_PURPLE}${ChatColor.BOLD}$admName entrou no modo ADMIN!")
-
             val player = (sender as Player)
+            player.health = 20.0
+            player.foodLevel = 20
 
-            addAdminInventoryItems(player)
-
-            adminCustomName(player)
+            AdminFunctions.addAdminInventoryItems(player)
+            AdminFunctions.setCustomName(player)
 
             return sender.isOnline
         }
 
-        sender.sendMessage("${ChatColor.RED}${ChatColor.BOLD}Você não tem permissão para entrar no modo de ADMIN")
+        sender.sendMessage(AdminString.adminPermission)
 
         return false
-    }
-
-    private fun addAdminInventoryItems(player: Player) {
-        val featherMeta = flyFeather.itemMeta
-        featherMeta!!.setDisplayName("${ChatColor.GREEN}[ADMIN] FLY")
-        val featherLore = listOf("Able/disable FLY")
-        featherMeta.lore = featherLore
-        flyFeather.setItemMeta(featherMeta)
-
-        val dustMeta = invisibleGlowDust.itemMeta
-        dustMeta!!.setDisplayName("${ChatColor.GREEN}[ADMIN] Invisible")
-        val dustLore = listOf("Able/disable FLY")
-        dustMeta.lore = dustLore
-        invisibleGlowDust.setItemMeta(dustMeta)
-
-        player.inventory.clear()
-        player.inventory.addItem(flyFeather)
-        player.inventory.addItem(invisibleGlowDust)
-    }
-
-    private fun adminCustomName(sender: CommandSender) {
-        val player = (sender as Player)
-        player.customName = "${ChatColor.DARK_RED}${ChatColor.BOLD}${player.displayName}"
-        player.setDisplayName(player.customName)
-        player.isCustomNameVisible = true
-        player.sendMessage("Seu nome mudou para: ${ChatColor.DARK_RED}${ChatColor.BOLD}${player.customName}")
-        sender.setDisplayName(player.customName)
-        sender.isCustomNameVisible = true
     }
 
     @EventHandler
@@ -82,6 +54,29 @@ class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
                         player.isInvisible = !player.isInvisible
                         player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}INVISIBLE: ${if (player.isInvisible) "ON" else "OFF"}")
                         player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}INVULNERABLE: ${if (player.isInvulnerable) "ON" else "OFF"}")
+                    }
+                    Material.DIAMOND_SWORD -> {
+                        val mode = when(player.gameMode) {
+                            GameMode.SURVIVAL -> "1"
+                            GameMode.CREATIVE -> "0"
+                            else -> "1"
+                        }
+                        GamemodeCmd.changeGameMode(player, arrayOf(mode))
+                    }
+                    Material.CLOCK -> {
+                        val world = player.world
+                        val time = world.time
+                        var args = ""
+                        if (time in 11001..23999) args = "day"
+                        else if (time > 24000) args = "night"
+                        TimeSetCmd.changeTimeSet(player, arrayOf(args))
+                    }
+                    Material.COAL -> {
+                        player.allowFlight = false
+                        player.isInvisible = false
+                        player.isInvulnerable = false
+                        player.isCustomNameVisible = false
+                        player.inventory.clear()
                     }
                     else -> {}
                 }

@@ -1,4 +1,4 @@
-package dev.feliperf.plugins.models
+package dev.feliperf.plugins.Models
 
 import java.time.LocalDateTime
 import java.util.ArrayList

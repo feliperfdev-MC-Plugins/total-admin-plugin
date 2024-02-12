@@ -2,35 +2,28 @@ package dev.feliperf.plugins.Commands
 
 import dev.feliperf.plugins.Contants.Admin.AdminString
 import dev.feliperf.plugins.Contants.SpecificPermissions
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-object NoAdminCmd : CommandExecutor {
+object WarningCmd : CommandExecutor {
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>,): Boolean {
 
         if (SpecificPermissions.canBeAdmin(sender.name)) {
-            val admName = sender.name
-            sender.sendMessage("${ChatColor.AQUA}$admName saiu no modo ADMIN!")
+            if (args.isEmpty()) {
+                sender.sendMessage("${ChatColor.RED}Uso: /warning <mensagem>")
+            } else {
+                val message = args.joinToString(" ")
+                Bukkit.getServer().broadcastMessage("${ChatColor.DARK_RED}${ChatColor.BOLD}[SERVER-WARNING]: ${ChatColor.RED}$message")
+            }
 
-            val player = (sender as Player)
-
-            player.allowFlight = false
-            player.isCustomNameVisible = false
-            sender.setDisplayName(sender.name)
-            sender.customName = sender.name
-            sender.isCustomNameVisible = false
-
-            sender.isInvulnerable = false
-            sender.isInvisible = false
-
-            return sender.isOnline
+            return (sender as Player).isOnline
         }
 
         sender.sendMessage(AdminString.adminPermission)
-
         return false
     }
 

@@ -16,9 +16,9 @@ commands:
   gamemode:
     description: Switch from Gamemode
     usage: /gamemode
-  spawn:
+  setspawn:
     description: Set server spawn
-    usage: /spawn
+    usage: /setspawn
   fly:
     description: Allows player fly
     usage: /fly
@@ -28,3 +28,6 @@ commands:
   kill:
     description: Kills itself or a target Player
     usage: /kill
+  warning:
+    description: Custom server warning visible to all online players
+    usage: /warning

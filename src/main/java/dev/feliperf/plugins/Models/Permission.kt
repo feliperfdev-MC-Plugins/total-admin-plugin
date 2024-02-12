@@ -1,4 +1,4 @@
-package dev.feliperf.plugins.models
+package dev.feliperf.plugins.Models
 
 enum class Permission {
     normal,

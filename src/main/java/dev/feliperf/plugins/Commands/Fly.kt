@@ -1,6 +1,8 @@
 package dev.feliperf.plugins.Commands
 
+import dev.feliperf.plugins.Contants.Admin.AdminString
 import dev.feliperf.plugins.Contants.SpecificPermissions
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -12,11 +14,11 @@ object FlyCmd : CommandExecutor {
         if (SpecificPermissions.canBeAdmin(sender.name)) {
             val player = (sender as Player)
             player.allowFlight = !player.allowFlight
-            player.sendMessage("FLY: ${if (player.allowFlight) "ON" else "OFF"}")
+            player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}FLY: ${if (player.allowFlight) "ON" else "OFF"}")
             return sender.isOnline
         }
 
-        sender.sendMessage("Você não tem permissão de ADMIN para executar este comando!")
+        sender.sendMessage(AdminString.adminPermission)
 
         return false
     }
