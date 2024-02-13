@@ -1,9 +1,8 @@
 package dev.feliperf.plugins.Commands
 
-import dev.feliperf.plugins.Contants.Admin.AdminString
-import dev.feliperf.plugins.Contants.SpecificPermissions
+import dev.feliperf.plugins.utils.Admin.AdminString
+import dev.feliperf.plugins.Functions.SpecificPermissions
 import org.bukkit.ChatColor
-import org.bukkit.World
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

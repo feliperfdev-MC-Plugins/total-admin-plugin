@@ -1,4 +1,4 @@
-package dev.feliperf.plugins.Contants.Admin
+package dev.feliperf.plugins.utils.Admin
 
 import org.bukkit.ChatColor
 

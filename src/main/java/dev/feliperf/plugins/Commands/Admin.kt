@@ -1,6 +1,6 @@
 package dev.feliperf.plugins.Commands
-import dev.feliperf.plugins.Contants.Admin.AdminString
-import dev.feliperf.plugins.Contants.SpecificPermissions
+import dev.feliperf.plugins.utils.Admin.AdminString
+import dev.feliperf.plugins.Functions.SpecificPermissions
 import dev.feliperf.plugins.Functions.AdminFunctions
 import dev.feliperf.plugins.TotalAdmin
 import org.bukkit.Bukkit
@@ -77,6 +77,7 @@ class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
                         player.isInvulnerable = false
                         player.isCustomNameVisible = false
                         player.inventory.clear()
+                        player.sendMessage("${ChatColor.AQUA}${player.name} saiu no modo ADMIN!")
                     }
                     else -> {}
                 }

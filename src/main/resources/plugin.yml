@@ -31,3 +31,9 @@ commands:
   warning:
     description: Custom server warning visible to all online players
     usage: /warning
+  login:
+    description: Authenticate user login in server
+    usage: /login
+  register:
+    description: Authenticate user register in server
+    usage: /register

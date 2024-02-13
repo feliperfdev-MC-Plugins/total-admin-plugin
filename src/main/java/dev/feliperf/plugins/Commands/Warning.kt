@@ -1,7 +1,7 @@
 package dev.feliperf.plugins.Commands
 
-import dev.feliperf.plugins.Contants.Admin.AdminString
-import dev.feliperf.plugins.Contants.SpecificPermissions
+import dev.feliperf.plugins.utils.Admin.AdminString
+import dev.feliperf.plugins.Functions.SpecificPermissions
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -19,7 +19,6 @@ object WarningCmd : CommandExecutor {
                 val message = args.joinToString(" ")
                 Bukkit.getServer().broadcastMessage("${ChatColor.DARK_RED}${ChatColor.BOLD}[SERVER-WARNING]: ${ChatColor.RED}$message")
             }
-
             return (sender as Player).isOnline
         }
 
