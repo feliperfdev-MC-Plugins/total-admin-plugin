@@ -48,7 +48,7 @@ class AdminFunctions {
 
             val leaveAdmin = CustomItem(
                     material = Material.COAL,
-                    "${ChatColor.DARK_RED}LEAVE ADMIN",
+                    "${ChatColor.DARK_RED}[ADMIN] LeaveADM",
                     "Leave Admin mode",
             )
 

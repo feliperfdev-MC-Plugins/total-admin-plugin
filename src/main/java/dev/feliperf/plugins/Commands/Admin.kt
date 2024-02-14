@@ -43,11 +43,11 @@ class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
         if (SpecificPermissions.canBeAdmin(event.player.name)) {
             val clickedItemMaterial = event.item!!.type
             val player = event.player
+
             if (event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK) {
                 when(clickedItemMaterial) {
                     Material.FEATHER -> {
-                        player.allowFlight = !player.allowFlight
-                        player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}FLY: ${if (player.allowFlight) "ON" else "OFF"}")
+                        FlyCmd.allowsFly(player)
                     }
                     Material.GLOWSTONE_DUST -> {
                         player.isInvulnerable = !player.isInvulnerable
@@ -56,12 +56,16 @@ class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
                         player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}INVULNERABLE: ${if (player.isInvulnerable) "ON" else "OFF"}")
                     }
                     Material.DIAMOND_SWORD -> {
-                        val mode = when(player.gameMode) {
-                            GameMode.SURVIVAL -> "1"
-                            GameMode.CREATIVE -> "0"
-                            else -> "1"
-                        }
-                        GamemodeCmd.changeGameMode(player, arrayOf(mode))
+                        GamemodeCmd.changeGameMode(
+                                player,
+                                arrayOf(
+                                        when (player.gameMode) {
+                                            GameMode.SURVIVAL -> "1"
+                                            GameMode.CREATIVE -> "0"
+                                            else -> "1"
+                                        },
+                                ),
+                        )
                     }
                     Material.CLOCK -> {
                         val world = player.world
@@ -76,6 +80,8 @@ class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
                         player.isInvisible = false
                         player.isInvulnerable = false
                         player.isCustomNameVisible = false
+                        player.setDisplayName("${ChatColor.WHITE}${player.name}")
+                        player.customName = player.displayName
                         player.inventory.clear()
                         player.sendMessage("${ChatColor.AQUA}${player.name} saiu no modo ADMIN!")
                     }
