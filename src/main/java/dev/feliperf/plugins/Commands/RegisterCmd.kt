@@ -1,6 +1,7 @@
 package dev.feliperf.plugins.Commands
 
 import dev.feliperf.plugins.datasource.controllers.UsersController
+import dev.feliperf.plugins.utils.functions.playerIsLogged
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -11,16 +12,18 @@ object RegisterCmd : CommandExecutor {
 
         val player = (sender as Player)
 
-        val user = UsersController.register(player.name, args.first(), "PLAYER")
+        if (!playerIsLogged(player)) {
+            val user = UsersController.register(player.name, args.first(), "PLAYER")
 
-        if (user != null) {
-            val validPassword = args.first() == user.password
-            if (validPassword) {
-                player.isInvisible = false
+            if (user != null) {
+                val validPassword = args.first() == user.password
+                if (validPassword) {
+                    player.setDisplayName("[PLAYER] ${sender.name}")
+                }
             }
-            return true
-        }
 
+            return user != null
+        }
         return false
     }
 

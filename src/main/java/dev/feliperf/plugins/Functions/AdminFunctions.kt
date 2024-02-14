@@ -63,10 +63,9 @@ class AdminFunctions {
         fun setCustomName(sender: CommandSender) {
             val player = (sender as Player)
             player.customName = "${ChatColor.DARK_RED}${ChatColor.BOLD}${player.displayName}"
-            player.setDisplayName(player.customName)
+            player.setDisplayName("[ADMIN] ${player.customName}")
             player.isCustomNameVisible = true
             player.sendMessage("Seu nome mudou para: ${ChatColor.DARK_RED}${ChatColor.BOLD}${player.customName}")
-            sender.setDisplayName(player.customName)
             sender.isCustomNameVisible = true
         }
     }

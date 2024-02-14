@@ -2,6 +2,7 @@ package dev.feliperf.plugins
 
 import dev.feliperf.plugins.Commands.*
 import dev.feliperf.plugins.datasource.controllers.UsersController
+import dev.feliperf.plugins.utils.functions.playerIsLogged
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
@@ -15,25 +16,24 @@ class TotalAdmin : JavaPlugin(), Listener {
     @EventHandler
     fun onJoinServer(event: PlayerJoinEvent) {
         val player = event.player
-        player.isInvisible = true
+        player.setDisplayName("[UNLOGGED] ${player.name}")
 
         val users = UsersController.fetch()
 
         var times = 0
+        val useServerMessage = "para poder continuar usando o servidor"
 
             timer(initialDelay = 1000L, period = 2000L) {
-                if (!player.isInvisible) {
+                if (playerIsLogged(player)) {
                     player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}BEM VINDE ${player.name}!!!")
                     this.cancel()
                 } else {
-                    if (!users.any { it.name == player.name }) {
-                        times++
-                        player.sendMessage("${ChatColor.YELLOW}Use /register <password> para poder continuar usando o servidor")
-                    } else {
-                        times++
-                        player.sendMessage("${ChatColor.YELLOW}Use /login <password> para poder continuar usando o servidor")
-                    }
-                    if (times == 100) {
+                    times++
+                    player.sendMessage(
+                            if (!users.any { it.name == player.name }) "${ChatColor.RED}[$times/50] ${ChatColor.YELLOW}Use /register <password> $useServerMessage"
+                            else "${ChatColor.RED}[$times/50] ${ChatColor.YELLOW}Use /login <password> $useServerMessage"
+                    )
+                    if (times == 50) {
                         Bukkit.getPlayer(player.name)!!.kickPlayer("${ChatColor.RED}Demorou para autenticar!")
                     }
                 }
