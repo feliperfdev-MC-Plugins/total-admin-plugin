@@ -43,7 +43,7 @@ class TotalAdmin : JavaPlugin(), Listener {
     override fun onEnable() {
         Bukkit.getServer().pluginManager.registerEvents(this, this)
 
-        Bukkit.getServer().motd = "${ChatColor.LIGHT_PURPLE}BEM VINDE AO CHERRY CRAFT\n${ChatColor.GREEN}Felipe & Clara Swift Powered"
+        Bukkit.getServer().motd = "${ChatColor.LIGHT_PURPLE}BEM VINDE AO CHERRY CRAFT\n${ChatColor.GREEN}Divirta-se!!!"
 
         getCommand("admin")?.setExecutor(AdminCmd(this))
 

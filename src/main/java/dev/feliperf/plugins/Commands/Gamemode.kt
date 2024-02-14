@@ -1,6 +1,6 @@
 package dev.feliperf.plugins.Commands
 
-import dev.feliperf.plugins.utils.Admin.AdminString
+import dev.feliperf.plugins.utils.Contants.AdminString
 import dev.feliperf.plugins.Functions.SpecificPermissions
 import org.bukkit.ChatColor
 import org.bukkit.GameMode
