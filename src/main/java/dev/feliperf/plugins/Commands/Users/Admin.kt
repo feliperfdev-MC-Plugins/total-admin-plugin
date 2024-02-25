@@ -1,4 +1,4 @@
-package dev.feliperf.plugins.Commands
+package dev.feliperf.plugins.Commands.Users
 import dev.feliperf.plugins.utils.Contants.AdminString
 import dev.feliperf.plugins.Functions.SpecificPermissions
 import dev.feliperf.plugins.Functions.AdminFunctions
@@ -22,7 +22,9 @@ class AdminCmd(plugin: TotalAdmin) : CommandExecutor, Listener {
 
 
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>,): Boolean {
-        if (SpecificPermissions.canBeAdmin(sender.name) && playerIsLogged(sender as Player)) {
+        if (playerIsAdmin(sender as Player)) return true
+
+        if (SpecificPermissions.canBeAdmin(sender.name) && playerIsLogged(sender)) {
             val admName = sender.name
             sender.sendMessage("${ChatColor.LIGHT_PURPLE}${ChatColor.BOLD}$admName entrou no modo ADMIN!")
             val player: Player = sender

@@ -1,7 +1,7 @@
-package dev.feliperf.plugins.Commands
+package dev.feliperf.plugins.Commands.Users
 
 import dev.feliperf.plugins.utils.Contants.AdminString
-import dev.feliperf.plugins.Functions.SpecificPermissions
+import dev.feliperf.plugins.utils.functions.playerIsAdmin
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -17,8 +17,8 @@ object FlyCmd : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>,): Boolean {
 
-        if (SpecificPermissions.canBeAdmin(sender.name)) {
-            val player = (sender as Player)
+        val player = (sender as Player)
+        if (playerIsAdmin(player)) {
             allowsFly(player)
             return sender.isOnline
         }
@@ -27,6 +27,4 @@ object FlyCmd : CommandExecutor {
 
         return false
     }
-
-
 }

@@ -1,7 +1,10 @@
 package dev.feliperf.plugins
 
-import dev.feliperf.plugins.Commands.*
+import dev.feliperf.plugins.Commands.Ban.BanCmd
+import dev.feliperf.plugins.Commands.Users.*
+import dev.feliperf.plugins.datasource.controllers.BanController
 import dev.feliperf.plugins.datasource.controllers.UsersController
+import dev.feliperf.plugins.utils.functions.playerIsBanned
 import dev.feliperf.plugins.utils.functions.playerIsLogged
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -13,31 +16,47 @@ import kotlin.concurrent.timer
 
 class TotalAdmin : JavaPlugin(), Listener {
 
+    //TODO: Create PlayerQuitEvent
+
     @EventHandler
     fun onJoinServer(event: PlayerJoinEvent) {
-        val player = event.player
-        player.setDisplayName("[UNLOGGED] ${player.name}")
 
-        val users = UsersController.fetch()
+        BanController.verifyBannedUsers()
+
+        val player = event.player
+        val playerFromDB = UsersController.getSpecificUser(player.name)
+
+        if (playerFromDB != null) {
+            if (playerIsBanned(playerFromDB)) {
+
+                Bukkit.getPlayer(playerFromDB.name)?.kickPlayer("${ChatColor.RED} VOCÊ ESTÁ BANIDO DO SERVIDOR!")
+            }
+        }
+
+        player.setDisplayName("[UNLOGGED] ${player.name}")
+        val authCounter = 20
+
 
         var times = 0
         val useServerMessage = "para poder continuar usando o servidor"
 
-            timer(initialDelay = 1000L, period = 2000L) {
-                if (playerIsLogged(player)) {
-                    player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}BEM VINDE ${player.name}!!!")
+        timer(initialDelay = 1000L, period = 2000L) {
+            if (playerIsLogged(player)) {
+                player.setDisplayName("${if (playerFromDB!!.permission == "ADMIN") "[ADMIN]" else "[PLAYER]"} ${player.name}")
+                player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}BEM VINDE ${player.name}!!!")
+                this.cancel()
+            } else {
+                times++
+                player.sendMessage(
+                        if (playerFromDB == null) "${ChatColor.RED}[$times/$authCounter] ${ChatColor.YELLOW}Use /register <password> $useServerMessage"
+                        else "${ChatColor.RED}[$times/$authCounter] ${ChatColor.YELLOW}Use /login <password> $useServerMessage"
+                )
+                if (times == authCounter) {
                     this.cancel()
-                } else {
-                    times++
-                    player.sendMessage(
-                            if (!users.any { it.name == player.name }) "${ChatColor.RED}[$times/50] ${ChatColor.YELLOW}Use /register <password> $useServerMessage"
-                            else "${ChatColor.RED}[$times/50] ${ChatColor.YELLOW}Use /login <password> $useServerMessage"
-                    )
-                    if (times == 50) {
-                        Bukkit.getPlayer(player.name)!!.kickPlayer("${ChatColor.RED}Demorou para autenticar!")
-                    }
+                    Bukkit.getPlayer(player.uniqueId)!!.kickPlayer("${ChatColor.RED}Demorou para autenticar!")
                 }
             }
+        }
     }
 
     override fun onEnable() {
@@ -45,8 +64,8 @@ class TotalAdmin : JavaPlugin(), Listener {
 
         Bukkit.getServer().motd = "${ChatColor.LIGHT_PURPLE}BEM VINDE AO CHERRY CRAFT\n${ChatColor.GREEN}Divirta-se!!!"
 
+        // USER Commands
         getCommand("admin")?.setExecutor(AdminCmd(this))
-
         getCommand("noadmin")?.setExecutor(NoAdminCmd)
         getCommand("gamemode")?.setExecutor(GamemodeCmd)
         getCommand("setspawn")?.setExecutor(SetSpawnCmd)
@@ -56,6 +75,10 @@ class TotalAdmin : JavaPlugin(), Listener {
         getCommand("warning")?.setExecutor(WarningCmd)
         getCommand("login")?.setExecutor(LoginCmd)
         getCommand("register")?.setExecutor(RegisterCmd)
+        getCommand("spawn")?.setExecutor(SpawnCmd)
+
+        // BAN/KICK Commands
+        getCommand("ban")?.setExecutor(BanCmd)
     }
 
     override fun onLoad() {

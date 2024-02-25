@@ -37,3 +37,11 @@ commands:
   register:
     description: Authenticate user register in server
     usage: /register
+  spawn:
+    description: Teleports player to server spawn
+    usage: /spawn
+
+#  BAN/KICK COMMANDS
+  ban:
+    description: Ban a player from server
+    usage: /ban
