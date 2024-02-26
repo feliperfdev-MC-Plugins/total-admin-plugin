@@ -11,12 +11,22 @@ import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.concurrent.timer
 
 class TotalAdmin : JavaPlugin(), Listener {
 
-    //TODO: Create PlayerQuitEvent
+    @EventHandler
+    fun onQuitServer(event: PlayerQuitEvent) {
+        val player = event.player
+        val auth = UsersController.disconnect(player.name)
+        if (auth != null) {
+            if (!auth.logged) {
+                Bukkit.broadcastMessage("${ChatColor.YELLOW}${player.name} desconectou do servidor!")
+            }
+        }
+    }
 
     @EventHandler
     fun onJoinServer(event: PlayerJoinEvent) {

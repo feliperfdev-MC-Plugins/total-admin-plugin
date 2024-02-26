@@ -28,5 +28,11 @@ class UsersController {
             val body = callback.execute().body()
             return body
         }
+
+        fun disconnect(name: String) : Auth? {
+            val callback = endpoint.disconnect(hashMapOf("name" to name))
+            val body = callback.execute().body()
+            return body
+        }
     }
 }

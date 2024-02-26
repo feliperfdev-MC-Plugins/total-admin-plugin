@@ -31,4 +31,9 @@ interface UsersEndpoint {
     fun login(
             @Body credentials: HashMap<String, String>,
     ) : retrofit2.Call<Auth>
+
+    @PATCH("disconnect")
+    fun disconnect(
+            @Body credentials: HashMap<String, String>,
+    ) : retrofit2.Call<Auth>
 }
