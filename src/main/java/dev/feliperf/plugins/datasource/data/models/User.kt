@@ -14,6 +14,9 @@ data class User(
         @SerializedName("permission")
         var permission: String,
 
+        @SerializedName("logged")
+        var logged: String,
+
         @SerializedName("joinedAt")
         var joinedAt: String,
 )

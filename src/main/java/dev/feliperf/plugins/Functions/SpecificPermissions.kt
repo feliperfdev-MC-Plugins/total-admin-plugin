@@ -1,6 +1,7 @@
 package dev.feliperf.plugins.Functions
 
 import dev.feliperf.plugins.datasource.controllers.UsersController
+import dev.feliperf.plugins.utils.models.UserPermission
 
 class SpecificPermissions {
 
@@ -9,7 +10,7 @@ class SpecificPermissions {
 
             val user = UsersController.getSpecificUser(name)
 
-            return user != null && user.permission == "ADMIN"
+            return user != null && user.permission == UserPermission.admin
         }
     }
 

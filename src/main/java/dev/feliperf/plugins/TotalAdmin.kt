@@ -1,11 +1,13 @@
 package dev.feliperf.plugins
 
 import dev.feliperf.plugins.Commands.Ban.BanCmd
+import dev.feliperf.plugins.Commands.Ban.UnbanCmd
 import dev.feliperf.plugins.Commands.Users.*
 import dev.feliperf.plugins.datasource.controllers.BanController
 import dev.feliperf.plugins.datasource.controllers.UsersController
 import dev.feliperf.plugins.utils.functions.playerIsBanned
 import dev.feliperf.plugins.utils.functions.playerIsLogged
+import dev.feliperf.plugins.utils.models.UserPermission
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
@@ -43,7 +45,7 @@ class TotalAdmin : JavaPlugin(), Listener {
             }
         }
 
-        player.setDisplayName("[UNLOGGED] ${player.name}")
+        player.setDisplayName("[${UserPermission.unlogged}] ${player.name}")
         val authCounter = 20
 
 
@@ -52,7 +54,7 @@ class TotalAdmin : JavaPlugin(), Listener {
 
         timer(initialDelay = 1000L, period = 2000L) {
             if (playerIsLogged(player)) {
-                player.setDisplayName("${if (playerFromDB!!.permission == "ADMIN") "[ADMIN]" else "[PLAYER]"} ${player.name}")
+                player.setDisplayName("${if (playerFromDB!!.permission == UserPermission.admin) "[${UserPermission.admin}]" else "[${UserPermission.player}]"} ${player.name}")
                 player.sendMessage("${ChatColor.GREEN}${ChatColor.BOLD}BEM VINDE ${player.name}!!!")
                 this.cancel()
             } else {
@@ -86,9 +88,11 @@ class TotalAdmin : JavaPlugin(), Listener {
         getCommand("login")?.setExecutor(LoginCmd)
         getCommand("register")?.setExecutor(RegisterCmd)
         getCommand("spawn")?.setExecutor(SpawnCmd)
+        getCommand("promote")?.setExecutor(PromoteCmd)
 
         // BAN/KICK Commands
         getCommand("ban")?.setExecutor(BanCmd)
+        getCommand("unban")?.setExecutor(UnbanCmd)
     }
 
     override fun onLoad() {

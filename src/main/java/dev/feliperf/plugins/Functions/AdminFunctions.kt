@@ -1,5 +1,6 @@
 package dev.feliperf.plugins.Functions
 
+import dev.feliperf.plugins.utils.models.UserPermission
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
@@ -25,30 +26,32 @@ class AdminFunctions {
                 } else return
             }
 
+            val adminTag = "[${UserPermission.admin}]"
+
             val flyMode = CustomItem(
                     material = Material.FEATHER,
-                    "${ChatColor.GREEN}[ADMIN] FLY",
+                    "${ChatColor.GREEN}$adminTag FLY",
                     "Able/disable FLY",
             )
             val invisibility = CustomItem(
                     material = Material.GLOWSTONE_DUST,
-                    "${ChatColor.GREEN}[ADMIN] Invisible",
+                    "${ChatColor.GREEN}$adminTag Invisible",
                     "Able/disable invisibility",
             )
             val gameMode = CustomItem(
                     material = Material.DIAMOND_SWORD,
-                    "${ChatColor.GREEN}[ADMIN] Gamemode",
+                    "${ChatColor.GREEN}$adminTag Gamemode",
                     "Easy change of gamemode",
             )
             val timeSet = CustomItem(
                     material = Material.CLOCK,
-                    "${ChatColor.GREEN}[ADMIN] Timeset",
+                    "${ChatColor.GREEN}$adminTag Timeset",
                     "Easy change of TimeSet",
             )
 
             val leaveAdmin = CustomItem(
                     material = Material.COAL,
-                    "${ChatColor.DARK_RED}[ADMIN] LeaveADM",
+                    "${ChatColor.DARK_RED}$adminTag LeaveADM",
                     "Leave Admin mode",
             )
 
@@ -63,7 +66,7 @@ class AdminFunctions {
         fun setCustomName(sender: CommandSender) {
             val player = (sender as Player)
             player.customName = "${ChatColor.DARK_RED}${ChatColor.BOLD}${player.displayName}"
-            player.setDisplayName("[ADMIN] ${player.customName}")
+            player.setDisplayName("[${UserPermission.admin}] ${player.customName}")
             player.isCustomNameVisible = true
             player.sendMessage("Seu nome mudou para: ${ChatColor.DARK_RED}${ChatColor.BOLD}${player.customName}")
             sender.isCustomNameVisible = true

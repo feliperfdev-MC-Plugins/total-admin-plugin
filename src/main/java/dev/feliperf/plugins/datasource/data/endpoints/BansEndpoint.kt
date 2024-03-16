@@ -2,8 +2,10 @@ package dev.feliperf.plugins.datasource.data.endpoints
 
 import dev.feliperf.plugins.datasource.data.models.BannedUser
 import dev.feliperf.plugins.datasource.data.models.BannedUserVerify
+import dev.feliperf.plugins.datasource.data.models.UnbannedStatus
 import dev.feliperf.plugins.datasource.data.models.User
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,4 +27,10 @@ interface BansEndpoint {
             @Query("reason") reason: String,
             @Query("durationInDays") durationInDays: Int,
     ) : retrofit2.Call<BannedUser>
+
+    @PATCH("unban")
+    fun unbanUser(
+        @Query("id") id: String,
+        @Query("name") name: String,
+    ) : retrofit2.Call<UnbannedStatus>
 }

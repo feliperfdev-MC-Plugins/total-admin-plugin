@@ -1,6 +1,7 @@
 package dev.feliperf.plugins.datasource.data.endpoints
 
 import dev.feliperf.plugins.datasource.data.models.Auth
+import dev.feliperf.plugins.datasource.data.models.PromoteStatus
 import dev.feliperf.plugins.datasource.data.models.User
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -36,4 +37,9 @@ interface UsersEndpoint {
     fun disconnect(
             @Body credentials: HashMap<String, String>,
     ) : retrofit2.Call<Auth>
+
+    @PATCH("promote")
+    fun promote(
+        @Body credentials: HashMap<String, String>,
+    ) : retrofit2.Call<PromoteStatus>
 }

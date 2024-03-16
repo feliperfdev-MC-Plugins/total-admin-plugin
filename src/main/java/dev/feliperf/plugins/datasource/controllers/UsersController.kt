@@ -3,6 +3,7 @@ package dev.feliperf.plugins.datasource.controllers
 import dev.feliperf.plugins.datasource.data.RetrofitNetwork
 import dev.feliperf.plugins.datasource.data.endpoints.UsersEndpoint
 import dev.feliperf.plugins.datasource.data.models.Auth
+import dev.feliperf.plugins.datasource.data.models.PromoteStatus
 import dev.feliperf.plugins.datasource.data.models.User
 
 class UsersController {
@@ -31,6 +32,12 @@ class UsersController {
 
         fun disconnect(name: String) : Auth? {
             val callback = endpoint.disconnect(hashMapOf("name" to name))
+            val body = callback.execute().body()
+            return body
+        }
+
+        fun promote(name: String, permission: String) : PromoteStatus? {
+            val callback = endpoint.promote(hashMapOf("name" to name, "permission" to permission))
             val body = callback.execute().body()
             return body
         }

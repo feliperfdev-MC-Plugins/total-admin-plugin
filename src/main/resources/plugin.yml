@@ -40,8 +40,14 @@ commands:
   spawn:
     description: Teleports player to server spawn
     usage: /spawn
+  promote:
+    description: Promote an user to a new role
+    usage: /promote
 
 #  BAN/KICK COMMANDS
   ban:
     description: Ban a player from server
     usage: /ban
+  unban:
+    description: Remove ban to a player from server
+    usage: /unban

@@ -4,6 +4,7 @@ import dev.feliperf.plugins.datasource.data.RetrofitNetwork
 import dev.feliperf.plugins.datasource.data.endpoints.BansEndpoint
 import dev.feliperf.plugins.datasource.data.models.BannedUser
 import dev.feliperf.plugins.datasource.data.models.BannedUserVerify
+import dev.feliperf.plugins.datasource.data.models.UnbannedStatus
 
 class BanController {
     companion object {
@@ -11,20 +12,20 @@ class BanController {
         private val client = RetrofitNetwork.getRetrofitInstance(BASE_URL)
         private val endpoint = client.create(BansEndpoint::class.java)
 
-        fun fetch() : List<BannedUser> {
-            val callback = endpoint.getBannedUsers()
+        fun banUser(id: String, name: String, reason: String, durationInDays: Int) : BannedUser? {
+            val callback = endpoint.banUser(id, name, reason, durationInDays)
             val body = callback.execute().body()
-            return body ?: listOf()
+            return body
         }
 
-        fun banUser(id: String, name: String, reason: String, durationInDays: Int) : BannedUser? {
-            val callback = endpoint.banUser(id, name, reason, durationInDays);
+        fun unbanUser(id: String, name: String) : UnbannedStatus? {
+            val callback = endpoint.unbanUser(id, name)
             val body = callback.execute().body()
             return body
         }
 
         fun verifyBannedUsers() : List<BannedUserVerify>? {
-            val callback = endpoint.verifyBannedUsers();
+            val callback = endpoint.verifyBannedUsers()
             val body = callback.execute().body()
             return body
         }
